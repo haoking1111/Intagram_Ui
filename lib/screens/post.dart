@@ -130,8 +130,7 @@ class Post extends StatelessWidget {
         ),
 
         // Post
-        Container(
-          color: Colors.red,
+        SizedBox(
           width: double.infinity,
           height: 390,
           child: Image.asset(imgPostPath, fit: BoxFit.fill),
