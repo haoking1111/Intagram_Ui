@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
-class Post extends StatelessWidget {
+class Post extends StatefulWidget {
   const Post({super.key});
+
+  @override
+  State<Post> createState() => _PostState();
+}
+class _PostState extends State<Post> {
+  // Sử dụng một danh sách các trạng thái yêu thích cho từng bài đăng
+  List<bool> isFavoriteList = List.generate(7, (index) => false);
+
+  // Sử dụng một danh sách các lượt thích
+  List<int> numberOfLikesList = [1410, 678, 652, 120, 99, 245, 154];
 
   @override
   Widget build(BuildContext context) {
@@ -10,63 +20,63 @@ class Post extends StatelessWidget {
             'assets/images/story/user1.png',
             '_ngb4o',
             'assets/images/action_post/post_img.png',
-            '1410',
             '_quyenne_',
-            'Image desktop 💻'
+            'Image desktop 💻',
+            0
         ),
 
         PostInfor(
             'assets/images/story/user2.png',
             '_quyenne_',
             'assets/images/action_post/quyen_post.png',
-            '678',
             '_ngb4o',
-            'Summer ☀️'
+            'Summer ☀️',
+            1
         ),
 
         PostInfor(
             'assets/images/story/user5.png',
             '_mahngu',
             'assets/images/action_post/manh_post.png',
-            '652',
             '_ngb4o',
-            'CheckIn 📸'
+            'CheckIn 📸',
+            2
         ),
 
         PostInfor(
             'assets/images/story/user3.png',
             '_training28_1',
             'assets/images/story/user3.png',
-            '120',
             '_ngb4o',
-            'Check in with Vespa 🛵'
+            'Check in with Vespa 🛵',
+            3
         ),
 
         PostInfor(
             'assets/images/story/user4.png',
             '_pien.08',
             'assets/images/story/user4.png',
-            '99',
             '_ngb4o',
-            'Happt birthday to me 🎉🎂'
+            'Happt birthday to me 🎉🎂',
+            4
         ),
 
         PostInfor(
             'assets/images/story/user6.png',
             '_huuchien102',
             'assets/images/action_post/chien_post.png',
-            '245',
             '_ngb4o',
-            '[ 26-05-2021 ] ❤️'
+            '[ 26-05-2021 ] ❤️',
+            5
         ),
 
         PostInfor(
             'assets/images/story/user3.png',
             '_training28_1',
             'assets/images/action_post/ninh_post.png',
-            '154',
             '_mahngu',
-            '🔥🥵🔥'
+            '🔥🥵🔥',
+            6
         ),
       ],
     );
@@ -77,10 +87,12 @@ class Post extends StatelessWidget {
       String imgInforUser,
       String nameUser,
       String imgPostPath,
-      String numberOfLikes,
       String userLikes,
       String postStatus,
+      int postIndex,
       ) {
+    bool isFavorite = isFavoriteList[postIndex]; // Trạng thái yêu thích cho bài đăng này
+    int numberOfLikes = numberOfLikesList[postIndex];
     return Column(
       children: [
         // Infor user
@@ -147,7 +159,18 @@ class Post extends StatelessWidget {
                 child: Row(
                   children: [
                     // actionPost('assets/images/appbar/heart_icon.png'),
-                    Icon(Icons.favorite, color: Colors.red, size: 27),
+                    GestureDetector(
+                      child: isFavorite
+                          ? Icon(Icons.favorite, color: Colors.red,)
+                          : actionPost('assets/images/appbar/heart_icon.png'),
+                      onTap: () {
+                        setState(() {
+                          isFavoriteList[postIndex] = !isFavorite;
+                          //// Tăng số lượt like nếu đã được yêu thích
+                          numberOfLikesList[postIndex] += isFavorite ? -1 : 1;
+                        });
+                      },
+                    ),
                     const SizedBox(width: 12,),
                     actionPost('assets/images/action_post/comment_icon.png'),
                     const SizedBox(width: 12,),
@@ -206,5 +229,5 @@ class Post extends StatelessWidget {
   Widget actionPost(String imagePath) {
     return Image.asset(imagePath);
   }
-
 }
+
